@@ -1,0 +1,13 @@
+# @package _global_
+cond_root: ${data_root}/images
+
+data:
+  condition_type: super_resolution
+  scale_factor: 8
+
+forward_process_kwargs:
+  scale_factor: ${data.scale_factor}
+
+checkpointing:
+  best_metric: "val/psnr"
+  best_mode: max

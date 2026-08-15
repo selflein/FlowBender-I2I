@@ -1,0 +1,21 @@
+# @package _global_
+
+# Reference (Rectified flow model [Flux])
+# - https://github.com/FlowChef/FlowChef/blob/9b705fcd91cb3cb8bf9d485ef6badc539201651c/src/fluxcombined.py#L916-L929
+# - https://github.com/FlowChef/FlowChef/blob/9b705fcd91cb3cb8bf9d485ef6badc539201651c/demos/app_flux.py#L316-L322
+# Uses: 30 steps with 1.0 learning rate, 1 optimization step, 1000x MSE loss weight.
+
+pipeline:
+  _target_: sd3.flowchef.StableDiffusion3PipelineFlowChef
+  additional_call_kwargs:
+    flowchef_kwargs:
+      learning_rate: 0.1
+      num_steps: 1
+      max_steps: 30
+      loss_func: mse
+      rescale: null
+      loss_reduction: mean
+      loss_scale: 1000.0
+
+generation:
+  num_inference_steps: 30

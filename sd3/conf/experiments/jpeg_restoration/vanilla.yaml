@@ -1,0 +1,13 @@
+# @package _global_
+defaults:
+  - override /task: jpeg_restoration
+
+exp_name: sd3-jpeg-scratch-vanilla
+feedback_mode: vanilla
+
+model:
+  controlnet_model_name_or_path: null
+  num_extra_conditioning_channels: 0
+
+training:
+  learning_rate: 1e-5

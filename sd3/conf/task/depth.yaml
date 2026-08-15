@@ -1,0 +1,10 @@
+# @package _global_
+cond_root: ${depths_root}
+
+data:
+  condition_type: depth
+
+pipeline:
+  additional_call_kwargs:
+    flowchef_kwargs:
+      loss_scale: 1.0

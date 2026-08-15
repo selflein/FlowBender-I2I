@@ -1,0 +1,17 @@
+# @package _global_
+# Edge conditioning is derived on the fly via HED from the GT image, so
+# the conditioning directory is just the image directory itself (the
+# dataset pairs each image with its own path as a placeholder).
+cond_root: ${data_root}/images
+
+data:
+  condition_type: edge
+
+pipeline:
+  additional_call_kwargs:
+    flowchef_kwargs:
+      loss_scale: 1.0
+
+checkpointing:
+  best_metric: "val/edge_mae"
+  best_mode: min

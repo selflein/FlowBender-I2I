@@ -1,0 +1,22 @@
+# @package _global_
+defaults:
+  - override /task: edge
+
+exp_name: sd3-edge-scratch-gradient-std-normal-mse-x0
+feedback_mode: gradient
+feedback_variant: rescale_std_normal
+gradient_cond_kwargs:
+  loss_func: mse
+  skip_denoiser_grad: true
+
+model:
+  controlnet_model_name_or_path: null
+  num_extra_conditioning_channels: 0
+
+training:
+  learning_rate: 1e-5
+  batch_size: 1
+  gradient_accumulation_steps: 16
+
+lr_scheduler:
+  name: cosine

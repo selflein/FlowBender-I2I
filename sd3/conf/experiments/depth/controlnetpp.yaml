@@ -1,0 +1,18 @@
+# @package _global_
+exp_name: sd3-depth-scratch-controlnetpp
+feedback_mode: vanilla
+
+model:
+  controlnet_model_name_or_path: null
+  num_extra_conditioning_channels: 0
+
+training:
+  learning_rate: 1e-5
+  batch_size: 1
+  gradient_accumulation_steps: 16
+
+reward_loss:
+  enabled: true
+  weight: 0.5
+  sigma_threshold: 0.2
+  loss_func: mse

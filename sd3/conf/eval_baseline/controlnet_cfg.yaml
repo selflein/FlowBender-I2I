@@ -1,0 +1,13 @@
+# @package _global_
+
+
+# Directory containing the controlnet model.
+# Or huggingface model id (e.g., "stabilityai/stable-diffusion-3.5-large-controlnet-depth")
+model_dir: ???
+
+pipeline:
+  _target_: sd3.flowbender.StableDiffusion3FlowBenderPipeline
+
+
+generation:
+  guidance_scale: 4.5

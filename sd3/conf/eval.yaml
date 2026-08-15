@@ -1,0 +1,62 @@
+defaults:
+  - _self_
+  - user: default
+  - eval_baseline:
+  # Optional. If omitted, evaluate.py auto-detects the task from the
+  # ControlNet's saved `forward_process_type` and fills in `cond_dir` /
+  # `data.condition_type` accordingly. Pass `task=...` only to override.
+  - task:
+
+model_dir: null
+output_dir: ???
+
+# When true, ignore the on-disk conditioning and re-derive the condition
+# from the GT image using ``forward_process.compute_condition``. Always on
+# for ``edge`` (there is no offline edge directory); optional for ``depth``.
+# SR / JPEG already derive the condition on the fly inside the dataset.
+recompute_cond_from_image: false
+
+base_model: ${oc.env:HF_HOME, ???}/hub/models--stabilityai--stable-diffusion-3.5-large/snapshots/ceddf0a7fdf2064ea28e2213e3b84e4afa170a0f
+
+pipeline:
+  _target_: ???
+  # Forwarded as kwargs to the pipeline's __call__. Inference-only knobs live here.
+  # Example — shortcut sampling for `feedback_mode in {residual, gradient, combined}`:
+  # reuses the prev step's post-Euler z0_hat on the *last* `shortcut_fraction * N`
+  # iterations, skipping the probe transformer+ControlNet calls at those steps.
+  #   0.0 = disabled (2N evals); 1.0 = only step 0 is a full probe (N+1 evals).
+  # additional_call_kwargs:
+  #   shortcut_fraction: 1.0
+  additional_call_kwargs: {}
+
+depths_root: ${data_root}/depths_Depth-Anything-V2-Large-hf
+prompts_root: ${data_root}/prompts_Florence-2-large
+
+# Set by a task config when one is specified; otherwise evaluate.py derives
+# the dataset location from the ControlNet's `forward_process_type`.
+cond_root: null
+
+data:
+  img_dir: ${data_root}/images/test
+  # Null => auto-filled by evaluate.py (from `cond_root` if a task was
+  # specified, else from the ControlNet config).
+  cond_dir: null
+  text_embeds_dir: ${data_root}/text_embeds_stable-diffusion-3.5-large/test
+  prompt_dir: ${prompts_root}/test
+  # Null => auto-filled by evaluate.py from the ControlNet config.
+  condition_type: null
+
+generation:
+  num_inference_steps: 40
+  guidance_scale: 1.0
+  seed: 42
+  resolution: 1024
+  max_sequence_length: 256
+  batch_size: 2
+  max_samples: null
+  debug_depth_output: false
+
+hydra:
+  output_subdir: null
+  job:
+    chdir: false

@@ -1,0 +1,3 @@
+# @package _global_
+pipeline:
+  _target_: diffusers.StableDiffusion3Pipeline

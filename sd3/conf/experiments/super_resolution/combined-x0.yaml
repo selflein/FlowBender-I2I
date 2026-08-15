@@ -1,0 +1,22 @@
+# @package _global_
+defaults:
+  - override /task: super_resolution
+
+exp_name: sd3-sr-scratch-combined
+feedback_mode: combined
+feedback_variant: [rescale_std_normal, scale_vae_range]  # (gradient option, residual option)
+
+gradient_cond_kwargs:
+  loss_func: mse
+  skip_denoiser_grad: true
+forward_process_kwargs:
+  scale_factor: 8
+
+model:
+  controlnet_model_name_or_path: null
+  num_extra_conditioning_channels: 16
+
+training:
+  learning_rate: 1e-5
+  batch_size: 1
+  gradient_accumulation_steps: 16

@@ -1,0 +1,11 @@
+# @package _global_
+exp_name: sd3-depth-scratch-residual-scaled
+feedback_mode: residual
+feedback_variant: scale_vae_range
+
+model:
+  controlnet_model_name_or_path: null
+  num_extra_conditioning_channels: 16  # Extra channels for the encoded residual
+
+training:
+  learning_rate: 1e-5

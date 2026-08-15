@@ -1,0 +1,13 @@
+# @package _global_
+cond_root: ${data_root}/images
+
+data:
+  condition_type: jpeg_restoration
+  jpeg_quality: 10
+
+forward_process_kwargs:
+  quality: ${data.jpeg_quality}
+
+checkpointing:
+  best_metric: "val/psnr"
+  best_mode: max

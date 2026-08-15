@@ -1,0 +1,15 @@
+/sample
+/.cursor
+**/__pycache__
+/evaluate_script.sh
+/launch_evals.sh
+/eval_fid.sh
+/.claude
+/CLAUDE.md
+/outputs
+/.ruff_cache
+
+# User-specific Hydra configs (keep default.yaml)
+sd3/conf/user/*
+!sd3/conf/user/default.yaml
+/.vscode

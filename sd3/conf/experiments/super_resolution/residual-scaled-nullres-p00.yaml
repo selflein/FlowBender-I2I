@@ -1,0 +1,17 @@
+# @package _global_
+defaults:
+  - override /task: super_resolution
+
+exp_name: sd3-sr-scratch-residual-scaled-nullres-p00
+feedback_mode: residual
+feedback_variant: scale_vae_range
+forward_process_kwargs:
+  scale_factor: 8
+
+model:
+  controlnet_model_name_or_path: null
+  num_extra_conditioning_channels: 16
+
+training:
+  learning_rate: 1e-5
+  null_residual_probability: 0.0

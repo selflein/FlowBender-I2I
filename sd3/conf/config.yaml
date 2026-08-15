@@ -1,0 +1,111 @@
+defaults:
+  - _self_
+  - optimizer: adamw
+  - user: default
+  - task: depth
+  - experiments:
+
+exp_name: ???  # Set by experiment config
+feedback_mode: vanilla
+feedback_variant: null
+gradient_cond_kwargs:
+  loss_func: l1
+# Task-specific forward-process kwargs are merged in by task/<task>.yaml
+# or the experiment config (e.g. `scale_factor: 8` for super-resolution).
+# Depth doesn't need any.
+forward_process_kwargs: {}
+
+model:
+  pretrained_model_name_or_path: stabilityai/stable-diffusion-3.5-large
+  controlnet_model_name_or_path: stabilityai/stable-diffusion-3.5-large-controlnet-depth
+  num_extra_conditioning_channels: 0  # only relevant if the controlnet is not pre-trained
+  revision: ceddf0a7fdf2064ea28e2213e3b84e4afa170a0f
+  variant: null
+  upcast_vae: false
+
+depths_root: ${data_root}/depths_Depth-Anything-V2-Large-hf
+prompts_root: ${data_root}/prompts_Florence-2-large
+
+data:
+  img_dir: ${data_root}/images/train
+  cond_dir: ${cond_root}/train
+  prompt_dir: ${prompts_root}/train
+  text_embeds_dir: ${data_root}/text_embeds_stable-diffusion-3.5-large/train
+  resolution: 1024
+
+validation:
+  img_dir: ${data_root}/images/test
+  cond_dir: ${cond_root}/test
+  prompt_dir: ${prompts_root}/test
+  text_embeds_dir: ${data_root}/text_embeds_stable-diffusion-3.5-large/test
+  num_samples: 10
+  num_samples_per_prompt: 1
+  run_every_n_steps: 100
+  num_denoising_steps: 20
+  guidance_scale: 1.0  # No CFG for validation
+
+loader:
+  num_workers: 2
+
+text:
+  max_sequence_length: 77
+
+feedback:
+  weight: 0.1
+  every_n_steps: 1
+
+reward_loss:  # ControlNet++ reward consistency loss (arXiv 2404.07987)
+  enabled: false
+
+wandb:
+  output_dir: ${wandb_dir}
+  tracker_project_name: flowbender-i2i
+
+training:
+  output_dir: ???  # Set via user config (sd3/conf/user/)
+  logging_dir: logs
+  seed: 42
+  batch_size: 4
+  max_steps: null
+  num_epochs: 5
+  gradient_checkpointing: true
+  learning_rate: 5e-6
+  scale_lr: false
+  max_grad_norm: 1.0
+  set_grads_to_none: true
+  gradient_accumulation_steps: 4
+  allow_tf32: true
+  null_residual_probability: 0.1
+  null_text_probability: 0.0
+
+lr_scheduler:
+  _target_: diffusers.optimization.get_scheduler
+  name: constant_with_warmup
+  num_warmup_steps: 500
+  num_cycles: 1
+  power: 1.0
+
+flow_matching:
+  weighting_scheme: logit_normal
+  logit_mean: 0.0
+  logit_std: 1.0
+  mode_scale: 1.29
+  precondition_outputs: 1
+
+checkpointing:
+  steps: 500
+  total_limit: null
+  resume_from: null
+  keep_last_n: 2
+  best_metric: "val/delta1"  # e.g. "val/delta1"
+  best_mode: max  # "min" or "max" — whether lower or higher metric is better
+
+accelerator:
+  gradient_accumulation_steps: ${training.gradient_accumulation_steps}
+  mixed_precision: bf16
+  log_with: wandb
+
+hydra:
+  output_subdir: null
+  job:
+    chdir: false

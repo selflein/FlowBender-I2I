@@ -1,0 +1,10 @@
+# @package _global_
+exp_name: sd3-depth-scratch-vanilla
+feedback_mode: vanilla
+
+model:
+  controlnet_model_name_or_path: null
+  num_extra_conditioning_channels: 0
+
+training:
+  learning_rate: 1e-5

@@ -1,0 +1,10 @@
+# @package _global_
+# Default user configuration. Copy this file to create your own user config:
+#   cp sd3/conf/user/default.yaml sd3/conf/user/myname.yaml
+# Then run with: python sd3/train_controlnet.py user=myname ...
+
+data_root: ???  # path/to/unsplash_25k
+wandb_dir: ???
+
+training:
+  output_dir: ???

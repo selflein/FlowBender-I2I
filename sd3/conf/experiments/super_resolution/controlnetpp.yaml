@@ -1,0 +1,23 @@
+# @package _global_
+defaults:
+  - override /task: super_resolution
+
+exp_name: sd3-sr-scratch-controlnetpp
+feedback_mode: vanilla
+forward_process_kwargs:
+  scale_factor: 8
+
+model:
+  controlnet_model_name_or_path: null
+  num_extra_conditioning_channels: 0
+
+training:
+  learning_rate: 1e-5
+  batch_size: 1
+  gradient_accumulation_steps: 16
+
+reward_loss:
+  enabled: true
+  weight: 0.5
+  sigma_threshold: 0.2
+  loss_func: mse
